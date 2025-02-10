@@ -262,7 +262,7 @@ class RelicApp:
 
         if selected_set in relic_data and selected_part in relic_data[selected_set]:
             item_id = relic_data[selected_set][selected_part]
-            host_name_l = [widget.get_h() for widget in self.attribute_widgets if widget.var.get() == 1 and not widget.is_main_attribute ]
+            host_name_l = [widget.get_h() for widget in self.attribute_widgets if widget.var.get() == 1 and not widget.is_main_attribute]
             if len(host_name_l) == 0:
                 command = f"/give {item_id}"
                 self.command_text.delete(1.0, tk.END)
