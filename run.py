@@ -168,6 +168,9 @@ class RelicApp:
             self.set_combobox["values"] = ["请选择"]
             self.update_part_combobox()
 
+        # 清除所有复选框的选中状态
+        self.clear_checkboxes()
+
     def update_part_combobox(self, event=None):
         selected_set = self.set_var.get()
         selected_category = self.category_var.get()
@@ -179,6 +182,9 @@ class RelicApp:
             self.part_combobox["values"] = ["请选择"]
             self.part_combobox.current(0)
             self.part_combobox.config(state="disabled")
+
+        # 清除所有复选框的选中状态
+        self.clear_checkboxes()
 
     def create_attribute_widgets(self, event):
         for widget in self.entry_widgets:
@@ -196,6 +202,9 @@ class RelicApp:
         if category in ["隧洞遗器", "位面饰品"] and selected_part not in ["", "请选择"]:
             self.create_main_attribute_widgets(category, selected_part)
             self.create_deputy_attribute_widgets()
+
+        # 清除所有复选框的选中状态
+        self.clear_checkboxes()
 
     def create_main_attribute_widgets(self, category, selected_part):
         attributes = self.relics_entry_host_data.get(selected_part, {}) if category == "隧洞遗器" else self.ornaments_entry_host_data.get(selected_part, {})
@@ -229,6 +238,10 @@ class RelicApp:
             self.entry_widgets.append(widget.checkbox)
             self.attribute_widgets.append(widget)
 
+    def clear_checkboxes(self):
+        for widget in self.attribute_widgets:
+            widget.var.set(0)
+
     def get_selected_attributes(self):
         selected_attributes = [widget.get_h() for widget in self.attribute_widgets if widget.var.get() == 1]
         print(selected_attributes)
@@ -249,13 +262,13 @@ class RelicApp:
 
         if selected_set in relic_data and selected_part in relic_data[selected_set]:
             item_id = relic_data[selected_set][selected_part]
-            host_name_l = [widget.get_h() for widget in self.attribute_widgets if widget.var.get() == 1 and not widget.is_main_attribute]
+            host_name_l = [widget.get_h() for widget in self.attribute_widgets if widget.var.get() == 1 and not widget.is_main_attribute ]
             if len(host_name_l) == 0:
                 command = f"/give {item_id}"
                 self.command_text.delete(1.0, tk.END)
                 self.command_text.insert(tk.END, command)
                 return command
-            else:
+            elif host_name_l[0] in relic_entry_data[selected_part]:
                 entry_id = relic_entry_data[selected_part][host_name_l[0]]
                 deputy_name_l = [widget.get_o() for widget in self.attribute_widgets if widget.var.get() == 1 and widget.is_main_attribute]
                 if len(deputy_name_l) == 0:
