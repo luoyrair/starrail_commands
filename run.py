@@ -242,10 +242,6 @@ class RelicApp:
         for widget in self.attribute_widgets:
             widget.var.set(0)
 
-    def get_selected_attributes(self):
-        selected_attributes = [widget.get_h() for widget in self.attribute_widgets if widget.var.get() == 1]
-        print(selected_attributes)
-
     def get_command(self):
         category = self.category_var.get()
         selected_set = self.set_var.get()
